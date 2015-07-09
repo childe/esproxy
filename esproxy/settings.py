@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-from private import SECRET_KEY
+from private import *
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -31,6 +31,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    "django_cas",
 )
 
 MIDDLEWARE_CLASSES = (
@@ -77,5 +79,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+LOGIN_URL = '/login.html'
+
+
 ELASTICSEARCH_PROXY = "/elasticsearch"
 ELASTICSEARCH_REAL = "/es"
+
+
+#CAS_SERVER_URL= 'https://cas.ctripcorp.com/caso/'
+CAS_SERVER_URL = 'http://cas.uat.qa.nt.ctripcorp.com/caso/'
