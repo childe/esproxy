@@ -1,10 +1,8 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
-urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'esproxy.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
-
+urlpatterns = patterns(
+    '',
+    url(r'^elasticsearch/', 'esproxy.views.elasticsearch'),
     url(r'^admin/', include(admin.site.urls)),
 )
