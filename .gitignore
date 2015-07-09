@@ -3,3 +3,4 @@
 *.swp
 *.swo
 esproxy/private.py
+.ropeproject/
