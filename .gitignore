@@ -1,0 +1,5 @@
+*.sqlite3
+*.log
+*.swp
+*.swo
+esproxy/private.py
