@@ -2,7 +2,7 @@ from django.http import HttpResponse,Http404
 from django.views.decorators.csrf import csrf_exempt
 
 
-def login_required(func):
+def login_or_404(func):
     def inner(*args, **karags):
         request = args[0]
         if request.user.is_authenticated():
@@ -14,7 +14,7 @@ def login_required(func):
 
 
 
-@login_required
+@login_or_404
 @csrf_exempt
 def elasticsearch(request):
     fullpath = request.get_full_path()
