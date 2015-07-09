@@ -14,7 +14,7 @@ def login_required(func):
 
 
 
-#@login_required
+@login_required
 @csrf_exempt
 def elasticsearch(request):
     fullpath = request.get_full_path()
