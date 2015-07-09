@@ -1,4 +1,4 @@
-from django.http import HttpResponse,Http404
+from django.http import HttpResponse,Http404,HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 
 
@@ -8,7 +8,8 @@ def login_or_404(func):
         if request.user.is_authenticated():
             func(*args, **karags)
         else:
-            raise Http404
+            #raise Http404
+            return HttpResponseRedirect("/es/")
 
     return inner
 
@@ -18,7 +19,7 @@ def login_or_404(func):
 @csrf_exempt
 def elasticsearch(request):
     fullpath = request.get_full_path()
-    fullpath = fullpath.lstrip("/elasticsearch")
+    fullpath = fullpath[len("/elasticsearch"):]
     response = HttpResponse()
     response['X-Accel-Redirect'] = '/es/' + fullpath
     return response
