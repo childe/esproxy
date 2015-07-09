@@ -5,6 +5,7 @@ from django_cas.views import login,logout
 
 urlpatterns = patterns(
     '',
+    url(r'^$', 'esproxy.views.home'),
     url(r'^elasticsearch/', 'esproxy.views.elasticsearch'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^login.html/$', csrf_exempt(login)),
