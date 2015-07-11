@@ -4,3 +4,4 @@
 *.swo
 esproxy/private.py
 .ropeproject/
+uwsgi.ini
