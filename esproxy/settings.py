@@ -86,6 +86,8 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,'templates'),
 )
 
+URL_PREFIX = "/"
+
 ELASTICSEARCH_PROXY = "/elasticsearch"
 ELASTICSEARCH_REAL = "/es"
 
