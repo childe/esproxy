@@ -28,8 +28,11 @@ def elasticsearch(request):
     return response
 
 
-@login_required
 def home(request):
+    return HttpResponseRedirect("index.html")
+
+@login_required
+def index(request):
     html = open(os.path.join(KIBANA_DIR,"index.html")).read()
     return HttpResponse(html)
 
