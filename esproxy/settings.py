@@ -12,8 +12,6 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-from private import *
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
@@ -101,3 +99,5 @@ CAS_AUTO_CREATE_USERS=True
 CAS_GATEWAY=False
 CAS_RETRY_LOGIN=True
 # MUST set CAS_SERVER_URL in private.py
+
+from private import *
