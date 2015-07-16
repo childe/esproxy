@@ -7,18 +7,18 @@ from django.shortcuts import render_to_response
 from settings import ELASTICSEARCH_PROXY, ELASTICSEARCH_REAL, KIBANA_DIR
 
 
-def login_or_404(func):
+def login_or_redirect_to_internal(func):
     def inner(*args, **karags):
         request = args[0]
         if request.user.is_authenticated():
             return func(*args, **karags)
         else:
-            return HttpResponseRedirect("/es/")
+            return HttpResponseRedirect(ELASTICSEARCH_REAL)
 
     return inner
 
 
-@login_or_404
+@login_or_redirect_to_internal
 @csrf_exempt
 def elasticsearch(request):
     fullpath = request.get_full_path()
