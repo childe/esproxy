@@ -1,3 +1,4 @@
+## -*- coding: utf-8 -*-
 import os
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
@@ -21,7 +22,7 @@ def login_or_redirect_to_internal(func):
 @login_or_redirect_to_internal
 @csrf_exempt
 def elasticsearch(request):
-    fullpath = request.get_full_path()
+    fullpath = request.get_full_path().encode("UTF8")
     fullpath = fullpath[len(ELASTICSEARCH_PROXY):]
     response = HttpResponse()
     response['X-Accel-Redirect'] = ELASTICSEARCH_REAL + '/' + fullpath
