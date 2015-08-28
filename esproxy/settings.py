@@ -93,20 +93,20 @@ ELASTICSEARCH_PROXY = "/elasticsearch"
 ELASTICSEARCH_REAL = "/es"
 
 #CAS
-#INSTALLED_APPS += (
-    #"django_cas",
-#)
-#AUTHENTICATION_BACKENDS = (
-    #'django.contrib.auth.backends.ModelBackend',
-    #'django_cas.backends.CASBackend',
-#)
-#CAS_LOGOUT_COMPLETELY=True
-#CAS_IGNORE_REFERER=True
-#CAS_REDIRECT_URL="/"
-#CAS_AUTO_CREATE_USERS=True
-#CAS_GATEWAY=False
-#CAS_RETRY_LOGIN=True
-#CAS_SERVER_URL = 'https://cas.corp.com'
+INSTALLED_APPS += (
+    "django_cas",
+)
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'django_cas.backends.CASBackend',
+)
+CAS_LOGOUT_COMPLETELY=True
+CAS_IGNORE_REFERER=True
+CAS_REDIRECT_URL="/"
+CAS_AUTO_CREATE_USERS=True
+CAS_GATEWAY=False
+CAS_RETRY_LOGIN=True
+CAS_SERVER_URL = 'https://cas.corp.com'
 
 KIBANA_DIR = '~/app/kibana'
 ELASTICSEARCH_PROXY = "/elasticsearch"

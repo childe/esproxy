@@ -38,12 +38,6 @@ def home(request):
     return response
 
 
-@login_required
-def index(request):
-    html = open(os.path.join(KIBANA_DIR, "index.html")).read()
-    response = HttpResponse(html)
-    response['Django-User'] = request.user.username
-    return response
 
 def login(request):
     username=""
