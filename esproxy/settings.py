@@ -62,6 +62,7 @@ DATABASES = {
     }
 }
 
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
@@ -85,7 +86,7 @@ LOGIN_URL = '/login.html'
 
 
 TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR,'templates'),
+    os.path.join(BASE_DIR, 'templates'),
 )
 
 ELASTICSEARCH_PROXY = "/elasticsearch"
@@ -96,8 +97,8 @@ ELASTICSEARCH_REAL = "/es"
     #"django_cas",
 #)
 #AUTHENTICATION_BACKENDS = (
-#'django.contrib.auth.backends.ModelBackend',
-#'django_cas.backends.CASBackend',
+    #'django.contrib.auth.backends.ModelBackend',
+    #'django_cas.backends.CASBackend',
 #)
 #CAS_LOGOUT_COMPLETELY=True
 #CAS_IGNORE_REFERER=True

@@ -2,11 +2,14 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.views.decorators.csrf import csrf_exempt
 
-from settings import AUTHENTICATION_BACKENDS
-if 'django_cas.backends.CASBackend' in AUTHENTICATION_BACKENDS:
-    from django_cas.views import login,logout
-else:
-    from esproxy import login,logout
+try:
+    from settings import AUTHENTICATION_BACKENDS
+    if 'django_cas.backends.CASBackend' in AUTHENTICATION_BACKENDS:
+        from django_cas.views import login,logout
+    else:
+        raise
+except:
+    from esproxy.views import login,logout
 
 urlpatterns = patterns(
     '',

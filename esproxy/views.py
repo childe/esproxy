@@ -3,8 +3,8 @@ import os
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-from django.template import RequestContext
-from django.shortcuts import render_to_response
+from django.contrib.auth import authenticate
+from django.contrib import auth
 from .settings import ELASTICSEARCH_PROXY, ELASTICSEARCH_REAL, KIBANA_DIR
 
 
@@ -30,8 +30,12 @@ def elasticsearch(request):
     return response
 
 
+@login_required
 def home(request):
-    return HttpResponseRedirect("index.html")
+    #return HttpResponseRedirect("index.html")
+    html = open(os.path.join(KIBANA_DIR, "index.html")).read()
+    response = HttpResponse(html)
+    return response
 
 
 @login_required
@@ -39,4 +43,15 @@ def index(request):
     html = open(os.path.join(KIBANA_DIR, "index.html")).read()
     response = HttpResponse(html)
     response['Django-User'] = request.user.username
+    return response
+
+def login(request):
+    username=""
+    password = ""
+    user = authenticate(username=username, password=password)
+    auth.login(request, user)
+    return HttpResponse("welcome " + user.username)
+
+def logout(request):
+    response = HttpResponse("OK")
     return response
