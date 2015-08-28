@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'abcdefg'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -89,27 +92,22 @@ ELASTICSEARCH_PROXY = "/elasticsearch"
 ELASTICSEARCH_REAL = "/es"
 
 #CAS
-INSTALLED_APPS += (
-    "django_cas",
-)
-AUTHENTICATION_BACKENDS = (
-'django.contrib.auth.backends.ModelBackend',
-'django_cas.backends.CASBackend',
-)
-CAS_LOGOUT_COMPLETELY=True
-CAS_IGNORE_REFERER=True
-CAS_REDIRECT_URL="/"
-CAS_AUTO_CREATE_USERS=True
-CAS_GATEWAY=False
-CAS_RETRY_LOGIN=True
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'abcdefg'
-
-CAS_SERVER_URL = 'https://cas.corp.com'
+#INSTALLED_APPS += (
+    #"django_cas",
+#)
+#AUTHENTICATION_BACKENDS = (
+#'django.contrib.auth.backends.ModelBackend',
+#'django_cas.backends.CASBackend',
+#)
+#CAS_LOGOUT_COMPLETELY=True
+#CAS_IGNORE_REFERER=True
+#CAS_REDIRECT_URL="/"
+#CAS_AUTO_CREATE_USERS=True
+#CAS_GATEWAY=False
+#CAS_RETRY_LOGIN=True
+#CAS_SERVER_URL = 'https://cas.corp.com'
 
 KIBANA_DIR = '~/app/kibana'
-
 ELASTICSEARCH_PROXY = "/elasticsearch"
 ELASTICSEARCH_REAL = "/es"
 
