@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
@@ -29,8 +32,6 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    "django_cas",
 )
 
 MIDDLEWARE_CLASSES = (
@@ -88,6 +89,9 @@ ELASTICSEARCH_PROXY = "/elasticsearch"
 ELASTICSEARCH_REAL = "/es"
 
 #CAS
+INSTALLED_APPS += (
+    "django_cas",
+)
 AUTHENTICATION_BACKENDS = (
 'django.contrib.auth.backends.ModelBackend',
 'django_cas.backends.CASBackend',
@@ -98,6 +102,15 @@ CAS_REDIRECT_URL="/"
 CAS_AUTO_CREATE_USERS=True
 CAS_GATEWAY=False
 CAS_RETRY_LOGIN=True
-# MUST set CAS_SERVER_URL in private.py
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'abcdefg'
+
+CAS_SERVER_URL = 'https://cas.corp.com'
+
+KIBANA_DIR = '~/app/kibana'
+
+ELASTICSEARCH_PROXY = "/elasticsearch"
+ELASTICSEARCH_REAL = "/es"
 
 from private import *
