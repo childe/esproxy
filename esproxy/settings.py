@@ -112,4 +112,7 @@ KIBANA_DIR = '~/app/kibana'
 ELASTICSEARCH_PROXY = "/elasticsearch"
 ELASTICSEARCH_REAL = "/es"
 
-from private import *
+try:
+    from private import *
+except:
+    pass
