@@ -4,4 +4,4 @@ web:
         deny: all
 app:
     _search:
-        deny: ["liujia"]
+        deny: ["childe"]
