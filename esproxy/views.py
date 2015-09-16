@@ -24,13 +24,13 @@ def authorize(func):
     def inner(*args, **karags):
         request = args[0]
         username = request.user.username
-        fullpath = request.get_full_path()
-        action = [e for e in fullpath.split('/') if e and e[0] == '_']
+        path = request.path
+        action = [e for e in path.split('/') if e and e[0] == '_']
         if action == [] or action[0] not in ELASTICSEARCH_AUTHORIZATION:
             return func(*args, **karags)
 
         action = action[0]
-        indices = fullpath.split('/')[2].split(',')
+        indices = path.split('/')[2].split(',')
         for index in indices:
             if pass_authorize(username, index, ELASTICSEARCH_AUTHORIZATION[action]) is False:
                 return HttpResponseRedirect(ELASTICSEARCH_REAL)
