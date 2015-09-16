@@ -120,7 +120,7 @@ try:
     for index, v in yaml.load(
         open(
             os.path.join(
-                BASE_DIR,"esproxy",
+                BASE_DIR, "esproxy",
                 "authorization.yml"))).items():
         for action, authorizations in v.items():
             ELASTICSEARCH_AUTHORIZATION.setdefault(action, {})
@@ -128,8 +128,6 @@ try:
 
 except:
     ELASTICSEARCH_AUTHORIZATION = {}
-
-print ELASTICSEARCH_AUTHORIZATION
 
 
 try:
