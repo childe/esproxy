@@ -7,3 +7,4 @@ esproxy/private.py
 .ropeproject/
 uwsgi.ini
 env/
+authorization.yml

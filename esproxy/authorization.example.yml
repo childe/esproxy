@@ -1,0 +1,7 @@
+web:
+    _search:
+        allow: ["childe"]
+        deny: all
+app:
+    _search:
+        deny: ["liujia"]
