@@ -89,6 +89,8 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates'),
 )
 
+LOGIN_URL = "login.html"
+
 ELASTICSEARCH_PROXY = "/elasticsearch"
 ELASTICSEARCH_REAL = "/es"
 

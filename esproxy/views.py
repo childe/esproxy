@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 import os
+from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
 from django.contrib import auth
-from .settings import ELASTICSEARCH_PROXY, ELASTICSEARCH_REAL, KIBANA_DIR, ELASTICSEARCH_AUTHORIZATION
+import settings
 
 
 def pass_authorize(username, index, config):
@@ -26,14 +27,14 @@ def authorize(func):
         username = request.user.username
         path = request.path
         action = [e for e in path.split('/') if e and e[0] == '_']
-        if action == [] or action[0] not in ELASTICSEARCH_AUTHORIZATION:
+        if action == [] or action[0] not in settings.ELASTICSEARCH_AUTHORIZATION:
             return func(*args, **karags)
 
         action = action[0]
         indices = path.split('/')[2].split(',')
         for index in indices:
-            if pass_authorize(username, index, ELASTICSEARCH_AUTHORIZATION[action]) is False:
-                return HttpResponseRedirect(ELASTICSEARCH_REAL)
+            if pass_authorize(username, index, settings.ELASTICSEARCH_AUTHORIZATION[action]) is False:
+                return HttpResponseRedirect(settings.ELASTICSEARCH_REAL)
 
         return func(*args, **karags)
 
@@ -46,7 +47,7 @@ def login_or_redirect_to_internal(func):
         if request.user.is_authenticated():
             return func(*args, **karags)
         else:
-            return HttpResponseRedirect(ELASTICSEARCH_REAL)
+            return HttpResponseRedirect(settings.ELASTICSEARCH_REAL)
 
     return inner
 
@@ -56,29 +57,39 @@ def login_or_redirect_to_internal(func):
 @csrf_exempt
 def elasticsearch(request):
     fullpath = request.get_full_path().encode("UTF8")
-    fullpath = fullpath[len(ELASTICSEARCH_PROXY):]
+    fullpath = fullpath[len(settings.ELASTICSEARCH_PROXY):]
     response = HttpResponse("OK")
-    response['X-Accel-Redirect'] = ELASTICSEARCH_REAL + '/' + fullpath
+    response['X-Accel-Redirect'] = settings.ELASTICSEARCH_REAL + '/' + fullpath
     response['Django-User'] = request.user.username
     return response
 
 
 @login_required
 def home(request):
-    # return HttpResponseRedirect("index.html")
-    html = open(os.path.join(KIBANA_DIR, "index.html")).read()
+    html = open(os.path.join(settings.KIBANA_DIR, "index.html")).read()
     response = HttpResponse(html)
     return response
 
 
-def login(request):
-    username = ""
-    password = ""
+def loginpage(request):
+    return render(
+        request, 'login.html', {
+            'next': request.GET.get(
+                'next', '/')})
+
+
+def loginuser(request):
+    username = request.POST.get('username')
+    password = request.POST.get('password')
+    nextpage = request.POST.get('next','/')
     user = authenticate(username=username, password=password)
+    if not user:
+        return HttpResponseRedirect(nextpage)
+
     auth.login(request, user)
-    return HttpResponse("welcome " + user.username)
+    return HttpResponseRedirect(nextpage)
 
 
 def logout(request):
-    response = HttpResponse("OK")
-    return response
+    auth.logout(request)
+    return HttpResponseRedirect('/')
