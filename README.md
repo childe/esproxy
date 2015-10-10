@@ -64,18 +64,14 @@ server {
 
 ## django应用部署
 
-### pip 安装依赖
-
-	% pip freeze
-	Django==1.8.3
-	PyYAML==3.11
-	uWSGI==2.0.9
-	wheel==0.24.0
-
 
 ### clone
 
 	git clone git@github.com:childe/esproxy.git
+
+### pip 安装依赖
+
+    pip install -r requirements.txt
 
 ### 配置CAS, 如果需要的话
 
@@ -114,5 +110,6 @@ server {
 	daemonize=/var/log/esproxy.log
 
 ### 启动uwsgi
-python manage.py syncdb
-uwsgi -i uwsgi.ini
+
+    python manage.py syncdb
+    uwsgi -i uwsgi.ini
