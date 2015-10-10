@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+import json
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
@@ -31,7 +32,10 @@ def authorize(func):
             return func(*args, **karags)
 
         action = action[0]
-        indices = path.split('/')[2].split(',')
+        if action == '_msearch':
+            indices = json.loads(request.body().split('\n')[0])['index']
+        else:
+            indices = path.split('/')[2].split(',')
         for index in indices:
             if pass_authorize(username, index, settings.ELASTICSEARCH_AUTHORIZATION[action]) is False:
                 return HttpResponseRedirect(settings.ELASTICSEARCH_REAL)
@@ -81,7 +85,7 @@ def loginpage(request):
 def loginuser(request):
     username = request.POST.get('username')
     password = request.POST.get('password')
-    nextpage = request.POST.get('next','/')
+    nextpage = request.POST.get('next', '/')
     user = authenticate(username=username, password=password)
     if not user:
         return HttpResponseRedirect(nextpage)
