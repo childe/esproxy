@@ -33,7 +33,9 @@ def authorize(func):
 
         action = action[0]
         if action == '_msearch':
-            indices = json.loads(request.body().split('\n')[0])['index']
+            indices = json.loads(request.body.split('\n')[0])['index']
+            if isinstance(indices, basestring):
+                indices = [indices]
         else:
             indices = path.split('/')[2].split(',')
         for index in indices:
