@@ -1,0 +1,4 @@
+Django==1.8.3
+PyYAML==3.11
+uWSGI==2.0.9
+wheel==0.24.0
