@@ -101,13 +101,27 @@ server {
 	cp authorization.example.yml authorization.yml
 
 配置文件示例如下:
-以web打头的索引, 只允许childe访问.  以app打头的索引,不允许childe访问.  默认权限是允许所有用户访问.
-    web:
+以web打头的索引, 只允许childe访问.  以app打头的索引,不允许childe搜索.  默认权限是允许所有用户访问.
+    web.*:
+        _mapping:
+            allow: ["childe"]
+            deny: all
+        _aliases:
+            allow: ["childe"]
+            deny: all
+        _alias:
+            allow: ["childe"]
+            deny: all
+        _msearch:
+            allow: ["childe"]
+            deny: all
         _search:
             allow: ["childe"]
             deny: all
-    app:
+    app.*:
         _search:
+            deny: ["childe"]
+        _msearch:
             deny: ["childe"]
 
 ### 配置uwsgi.ini
