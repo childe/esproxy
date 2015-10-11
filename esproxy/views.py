@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+import re
 import json
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
@@ -12,7 +13,7 @@ import settings
 
 def pass_authorize(username, index, config):
     for index_prefix, c in config.items():
-        if not index.startswith(index_prefix):
+        if not re.match(r'^%s$' % index_prefix, index):
             continue
         if username in c.get("allow", []):
             continue
