@@ -15,7 +15,7 @@ __all__ = ['login', 'logout', 'proxy_callback']
 
 logger = logging.getLogger(__name__)
 
-# Work around for UnicodeEncodeErrors.
+# Work around for UnicodeEncodeErrors. 
 def _fix_encoding(x):
     if type(x) is types.UnicodeType:
         return x.encode('utf-8');
@@ -30,7 +30,7 @@ def _service(request):
 
 def _service_url(request, redirect_to):
     """ Returns application service URL for CAS. """
-
+    
     service = _service(request) + request.path
 
     params = {}
@@ -52,7 +52,7 @@ def _redirect_url(request):
 
     if request.GET.get(auth.REDIRECT_FIELD_NAME):
         return _fix_encoding(request.GET.get(auth.REDIRECT_FIELD_NAME))
-
+    
     if settings.CAS_IGNORE_REFERER:
         return settings.CAS_REDIRECT_URL
 
@@ -86,7 +86,7 @@ def _single_sign_out(request):
     single_sign_out_request = request.POST.get('logoutRequest')
     request.session = _get_session(single_sign_out_request)
     request.user = auth.get_user(request)
-    logger.debug("Got single sign out callback from CAS for user %s session %s",
+    logger.debug("Got single sign out callback from CAS for user %s session %s", 
                  request.user, request.session.session_key)
     auth.logout(request)
     return HttpResponse()
@@ -98,7 +98,7 @@ def login(request):
 
     if settings.CAS_SINGLE_SIGN_OUT and request.POST.get('logoutRequest'):
         return _single_sign_out(request)
-
+        
     next_page = _redirect_url(request)
 
     if request.user.is_authenticated():
@@ -109,21 +109,21 @@ def login(request):
 
     if settings.CAS_GATEWAY and request.GET.get(settings.CAS_GATEWAY_PARAM) and not ticket:
         raise PermissionDenied()
-
+    
     if not ticket:
         return HttpResponseRedirect(_login_url(service))
-
+   
     user = auth.authenticate(ticket=ticket, service=service)
 
     if user is not None:
         auth.login(request, user)
         return HttpResponseRedirect(next_page)
-
+    
     if settings.CAS_RETRY_LOGIN:
         return HttpResponseRedirect(_login_url(service))
 
     raise PermissionDenied("Login failed")
-
+ 
 
 def _get_session(logout_response):
     """ Recovers the session mapped with the CAS service ticket
@@ -135,7 +135,7 @@ def _get_session(logout_response):
         sst = SessionServiceTicket.objects.get(pk=ticket)
         return sst.get_session()
     except SessionServiceTicket.DoesNotExist:
-        logger.info("No session matching single sign out request: %s", ticket)
+        logger.info("No session matching single sign out request: %s", ticket)        
     except Exception as e:
         logger.error("Unable to parse logout response from server: %s", e)
     raise Http404
@@ -149,7 +149,7 @@ def logout(request):
     if settings.CAS_LOGOUT_COMPLETELY:
         return HttpResponseRedirect(_logout_url(request, next_page))
     else:
-        # This is in most cases pointless if not CAS_RENEW is set. The user will
+        # This is in most cases pointless if not CAS_RENEW is set. The user will 
         # simply be logged in again on next request requiring authorization.
         return HttpResponseRedirect(next_page)
 
@@ -157,7 +157,7 @@ def logout(request):
 def proxy_callback(request):
     """Handles CAS 2.0+ XML-based proxy callback call.
 
-        Stores the proxy granting ticket in the database for
+        Stores the proxy granting ticket in the database for 
         future use.
     """
     pgtIou = request.GET.get('pgtIou')

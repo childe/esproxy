@@ -17,7 +17,8 @@ _DEFAULTS = {
     'CAS_PROXY_CALLBACK': None,
     'CAS_SERVER_URL': None,
     'CAS_AUTO_CREATE_USERS' : False,
-    'CAS_ALLOWED_PROXIES' : []
+    'CAS_ALLOWED_PROXIES' : [],
+    'CAS_ALLOWED_GROUPS' : []
 }
 
 for key, value in _DEFAULTS.iteritems():
