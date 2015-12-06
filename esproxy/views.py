@@ -30,7 +30,7 @@ def pass_authorize(user, index, action):
 
     for config in index_config:
         if config.get_action_display() in (action, "all"):
-            if config.username == user.username or config.group in [e.name for e in user.groups.all()]:
+            if config.username in (user.username,"_ALL_") or config.group in [e.name for e in user.groups.all()]:
                 return config.allowed
 
     # default true
