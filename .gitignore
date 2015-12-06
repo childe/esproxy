@@ -3,8 +3,9 @@
 *.log
 *.swp
 *.swo
-esproxy/private.py
 .ropeproject/
-uwsgi.ini
+esproxy/private.py
 env/
+django_cache/
+uwsgi.ini
 authorization.yml

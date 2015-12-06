@@ -35,6 +35,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'esauth',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -114,6 +115,12 @@ KIBANA_DIR = '~/app/kibana'
 ELASTICSEARCH_PROXY = "/elasticsearch"
 ELASTICSEARCH_REAL = "/es"
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': os.path.join(BASE_DIR,'django_cache'),
+    }
+}
 
 try:
     import yaml
