@@ -16,6 +16,6 @@ class ESAuth(models.Model):
     index = models.IntegerField()
     username = models.CharField(max_length=255, null=True, blank=True)
     group = models.CharField(max_length=255, null=True, blank=True)
-    allowed = models.BooleanField()
+    allowed = models.BooleanField(default=True)
     index_regexp = models.CharField(max_length=255)
     action = models.IntegerField(choices=ACTION_CHOICES, default=0)
