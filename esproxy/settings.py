@@ -114,6 +114,7 @@ CAS_SERVER_URL = 'https://cas.corp.com'
 KIBANA_DIR = '~/app/kibana'
 ELASTICSEARCH_PROXY = "/elasticsearch"
 ELASTICSEARCH_REAL = "/es"
+AUTH_CACHE_TIMEOUT = 120
 
 CACHES = {
     'default': {
