@@ -96,33 +96,6 @@ server {
 	ELASTICSEARCH_PROXY = "/elasticsearch"
 	ELASTICSEARCH_REAL = "/es"
 
-### 权限控制
-	cd esproxy
-	cp authorization.example.yml authorization.yml
-
-配置文件示例如下:
-以web打头的索引, 只允许childe访问.  以app打头的索引,不允许childe搜索.  默认权限是允许所有用户访问.
-    web.*:
-        _mapping:
-            allow: ["childe"]
-            deny: all
-        _aliases:
-            allow: ["childe"]
-            deny: all
-        _alias:
-            allow: ["childe"]
-            deny: all
-        _msearch:
-            allow: ["childe"]
-            deny: all
-        _search:
-            allow: ["childe"]
-            deny: all
-    app.*:
-        _search:
-            deny: ["childe"]
-        _msearch:
-            deny: ["childe"]
 
 ### 配置uwsgi.ini
 
@@ -141,3 +114,13 @@ server {
 
     python manage.py syncdb
     uwsgi -i uwsgi.ini
+
+
+### 权限控制
+	
+在django的admin页面, 添加配置项.
+![权限配置](https://raw.githubusercontent.com/childe/esproxy/master/auth_config.png)
+
+对于访问的索引, 会对所有的配置项按index的顺序一一匹配, 如果index regexp能match, 就会判断用户名/组名是否匹配, 然后返回true或者false.
+
+如上图的配置, 就是说, 对web-20打头的索引, OPS组的人可以访问, childe这个用户也可以访问, 其他人都不可以.
