@@ -26,8 +26,8 @@ def pass_authorize(user, index, action):
                 continue
             #o_action  = o.get_action_display()
             index_config.append(o)
-    # cache 300 seconds
-    cache.set(index, index_config, settings.AUTH_CACHE_TIMEOUT)
+        # cache the config
+        cache.set(index, index_config, settings.AUTH_CACHE_TIMEOUT)
 
     for config in index_config:
         if config.get_action_display() in (action, "all"):
