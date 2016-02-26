@@ -43,12 +43,16 @@ def authorize(func):
         request = args[0]
         user = request.user
         path = request.path
-        action = [e for e in path.split('/') if e and e[0] == '_']
+        if request.method == 'DELETE':
+            action = '_delete'
+        else:
+            action = [e for e in path.split('/') if e and e[0] == '_']
 
-        if action == []:
+        if not action:
             return func(*args, **karags)
 
-        action = action[0]
+        if isinstance(action, list):
+            action = action[0]
 
         if action == '_msearch':
             indices = json.loads(request.body.split('\n')[0])['index']
