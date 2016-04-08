@@ -124,23 +124,6 @@ CACHES = {
 }
 
 try:
-    import yaml
-    ELASTICSEARCH_AUTHORIZATION = {}
-
-    for index, v in yaml.load(
-        open(
-            os.path.join(
-                BASE_DIR, "esproxy",
-                "authorization.yml"))).items():
-        for action, authorizations in v.items():
-            ELASTICSEARCH_AUTHORIZATION.setdefault(action, {})
-            ELASTICSEARCH_AUTHORIZATION[action][index] = authorizations
-
-except:
-    ELASTICSEARCH_AUTHORIZATION = {}
-
-
-try:
     from private import *
 except:
     pass
