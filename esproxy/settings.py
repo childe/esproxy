@@ -92,9 +92,6 @@ TEMPLATE_DIRS = (
 
 LOGIN_URL = "login.html"
 
-ELASTICSEARCH_PROXY = "/elasticsearch"
-ELASTICSEARCH_REAL = "/es"
-
 # CAS
 INSTALLED_APPS += (
     "django_cas",
@@ -112,8 +109,8 @@ CAS_RETRY_LOGIN = True
 CAS_SERVER_URL = 'https://cas.corp.com'
 
 KIBANA_DIR = '~/app/kibana'
-ELASTICSEARCH_PROXY = "/elasticsearch"
-ELASTICSEARCH_REAL = "/es"
+ELASTICSEARCH_PROXY = "elasticsearch"
+ELASTICSEARCH_REAL = "es"
 AUTH_CACHE_TIMEOUT = 120
 
 CACHES = {

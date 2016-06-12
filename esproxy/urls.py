@@ -12,11 +12,13 @@ except:
     from esproxy.views import loginpage,logout
 from esproxy.views import loginuser
 
+from settings import ELASTICSEARCH_PROXY
+
 urlpatterns = patterns(
     '',
     url(r'^$', 'esproxy.views.home'),
     url(r'^index.html', 'esproxy.views.home'),
-    url(r'^elasticsearch/', 'esproxy.views.elasticsearch'),
+    url(r'^%s/'%ELASTICSEARCH_PROXY , 'esproxy.views.elasticsearch'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^login.html$', loginpage),
     url(r'^login$', csrf_exempt(loginuser)),
