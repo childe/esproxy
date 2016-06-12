@@ -31,7 +31,7 @@ def pass_authorize(user, index, action):
 
     for config in index_config:
         if config.get_action_display() in (action, "all"):
-            if config.username in (user.username,"_ALL_") or config.group in [e.name for e in user.groups.all()]:
+            if config.username in (user.username, "_ALL_") or config.group in [e.name for e in user.groups.all()]:
                 return config.allowed
 
     # default true
@@ -90,9 +90,9 @@ def login_or_redirect_to_internal(func):
 @csrf_exempt
 def elasticsearch(request):
     fullpath = request.get_full_path().encode("UTF8")
-    fullpath = fullpath[len(settings.ELASTICSEARCH_PROXY):]
     response = HttpResponse()
-    response['X-Accel-Redirect'] = settings.ELASTICSEARCH_REAL + '/' + fullpath
+    response[
+        'X-Accel-Redirect'] = fullpath.replace(settings.ELASTICSEARCH_PROXY, settings.ELASTICSEARCH_REAL, 1)
     response['Django-User'] = request.user.username
     return response
 
