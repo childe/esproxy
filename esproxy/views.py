@@ -55,9 +55,11 @@ def authorize(func):
             action = action[0]
 
         if action == '_msearch':
-            indices = json.loads(request.body.split('\n')[0])['index']
-            if isinstance(indices, basestring):
-                indices = [indices]
+            _splited = [e for e in path.split('/')]
+            indices = _splited[_splited.index('_msearch')-1].split(',')
+            for i, line in enumerate(request.body.split('\n')):
+                if i % 2 == 0 and line != "":
+                    indices.extend(json.loads(line).get('index').split(','))
         else:
             # parts[0] is blank;#parts[1] is ELASTICSEARCH_PROXY
             if path.split('/')[2].startswith("_"):
