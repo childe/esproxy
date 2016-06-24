@@ -82,7 +82,9 @@ def login_or_redirect_to_internal(func):
         if request.user.is_authenticated():
             return func(*args, **karags)
         else:
-            return HttpResponseRedirect(settings.ELASTICSEARCH_REAL)
+            r = HttpResponse('',)
+            r.status_code = 403
+            return r
 
     return inner
 
