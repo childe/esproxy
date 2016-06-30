@@ -13,65 +13,87 @@ from esauth.models import ESAuth
 import settings
 
 
-def pass_authorize(user, index, action):
-    '''if the USER could do the ACTION with the INDEX
+def pass_authorize(user_config_list, method, path):
+    '''if the USER could do the method with the path.
+    if he has the permission, return True
+    Nontice is he do NOT has permission, return **config** which will be user later
     '''
-    index_config = cache.get(index)
-
-    # build cache
-    if index_config is None:
-        index_config = []
-        for o in ESAuth.objects.order_by("index"):
-            if not re.match(r'^%s$' % o.index_regexp, index):
-                continue
-            #o_action  = o.get_action_display()
-            index_config.append(o)
-        # cache the config
-        cache.set(index, index_config, settings.AUTH_CACHE_TIMEOUT)
-
-    for config in index_config:
-        if config.get_action_display() in (action, "all"):
-            if config.username in (user.username, "_ALL_") or config.group in [e.name for e in user.groups.all()]:
-                return config.allowed
-
-    # default true
+    for config in user_config_list:
+        if config.get_request_method_display() in ("_ALL_", method) and re.match(config.uri_regexp, path):
+            if config.allowed is True:
+                return True
+            else:
+                return config
     return True
+
+
+def _config_sort_method(x, y):
+    if x.index != y.index:
+        return x.index - y.index
+
+    if x.username != "":
+        if x.username != "_ALL_":
+            x_factor = 1
+        else:
+            x_factor = 2
+    else:
+        x_factor = 3
+
+    if y.username != "":
+        if y.username != "_ALL_":
+            y_factor = 1
+        else:
+            y_factor = 2
+    else:
+        y_factor = 3
+
+    return x_factor - y_factor
 
 
 def authorize(func):
     def inner(*args, **karags):
+
         request = args[0]
         user = request.user
         path = request.path
-        if request.method == 'DELETE':
-            action = '_delete'
-        else:
-            action = [e for e in path.split('/') if e and e[0] == '_']
+        path = path.replace('/'+settings.ELASTICSEARCH_PROXY, "", 1)
+        method = request.method
 
-        if not action:
-            return func(*args, **karags)
+# sort configs && build cache
+        user_config_list = cache.get(user.username)
+        if user_config_list is None:
+            user_config_list = []
+            for o in ESAuth.objects.order_by("index"):
+                if o.username == user.username or o.username == "_ALL_" or o.group in [e.name for e in user.groups.all()]:
+                    user_config_list.append(o)
 
-        if isinstance(action, list):
-            action = action[0]
+            user_config_list.sort(cmp=_config_sort_method)
+            cache.set(
+                user.username,
+                user_config_list,
+                settings.AUTH_CACHE_TIMEOUT)
 
-        if action == '_msearch':
+# process _msearch
+        action = [e for e in path.split('/') if e and e[0] == '_']
+
+        if action and action[0] == '_msearch':
             _splited = [e for e in path.split('/')]
             indices = _splited[_splited.index('_msearch')-1].split(',')
             for i, line in enumerate(request.body.split('\n')):
                 if i % 2 == 0 and line != "":
                     indices.extend(json.loads(line).get('index').split(','))
+            path = '/' + ','.join(indices) + '/_search'
+
+        rst = pass_authorize(user_config_list, method, path)
+        if rst is True:
+            return func(*args, **karags)
         else:
-            # parts[0] is blank;#parts[1] is ELASTICSEARCH_PROXY
-            if path.split('/')[2].startswith("_"):
-            # it is not real indexname, maybe an action
-                return func(*args, **karags)
-            indices = path.split('/')[2].split(',')
-
-        for index in indices:
-            if pass_authorize(user, index, action) is False:
-                return HttpResponseRedirect(settings.ELASTICSEARCH_REAL)
-
-        return func(*args, **karags)
+            # TODO: 301/302
+            response = HttpResponse(
+                rst.response_value,
+                content_type="application/json; charset=UTF-8")
+            response.status_code = rst.response_code
+            return response
 
     return inner
 
