@@ -29,7 +29,7 @@ def pass_authorize(user_config_list, method, path):
 
 def _config_sort_method(x, y):
     if x.index != y.index:
-        return x.index - y.index
+        return int(x.index - y.index)
 
     if x.username != "":
         if x.username != "_ALL_":
