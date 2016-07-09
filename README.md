@@ -93,8 +93,8 @@ server {
 ### 配置kibana目录和访问路径等
 
 	KIBANA_DIR = '~/app/kibana'
-	ELASTICSEARCH_PROXY = "/elasticsearch"
-	ELASTICSEARCH_REAL = "/es"
+	ELASTICSEARCH_PROXY = "elasticsearch"
+	ELASTICSEARCH_REAL = "es"
 
 
 ### 配置uwsgi.ini
