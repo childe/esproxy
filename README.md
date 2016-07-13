@@ -121,6 +121,14 @@ server {
 在django的admin页面, 添加配置项.
 ![权限配置](https://raw.githubusercontent.com/childe/esproxy/master/auth_config.png)
 
-对于访问的索引, 会对所有的配置项按index的顺序一一匹配, 如果index regexp能match, 就会判断用户名/组名是否匹配, 然后返回true或者false.
+权限控制的过程是:
 
-如上图的配置, 就是说, 对web-20打头的索引, OPS组的人可以访问, childe这个用户也可以访问, 其他人都不可以.
+1. 根据用户名/组名判断当前访问用户适用的规则有哪些
+2. 对规则按照index排名, index相同时, 用户名匹配的优先级别比组匹配的优先级别高
+3. 遍历排序后的规则, uri如果match, 则应用规则(有权限或者无权限)并退出. 如果所有规则都不match, 默认有权限.
+
+如上图的配置, 就是说:
+
+- 对web-20打头的索引, OPS组的人可以访问, 其他人都不可以.
+- kibana中的private这个面板, 不可以更新.
+- Kibana中的所有面板, 只有admin可以删除, 其他人不可以删除.
