@@ -55,7 +55,7 @@ def authorize(func):
 
         request = args[0]
         user = request.user
-        path = request.path
+        path = request.get_full_path().encode("UTF8")
         path = path.replace('/'+settings.ELASTICSEARCH_PROXY, "", 1)
         method = request.method
 
